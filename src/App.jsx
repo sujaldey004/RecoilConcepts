@@ -1,6 +1,5 @@
-import { RecoilRoot, useRecoilValue } from "recoil"
-import { jobNotification, Me, messageNotification, networkNotification, Notification } from "./atom"
-
+import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil"
+import { notifications, totalNotificationSelector } from "./atom"
 
 function App(){
   return <RecoilRoot>
@@ -9,19 +8,17 @@ function App(){
 }
 
 function NavBar() {
-  const forNetwork = useRecoilValue(networkNotification);
-  const forJob = useRecoilValue(jobNotification);
-  const forMessage = useRecoilValue(messageNotification);
-  const forNotification = useRecoilValue(Notification);
-  const forMe = useRecoilValue(Me);
+  const [notificationCount, setNotificationCount] = useRecoilState(notifications);
+  const totalNotification = useRecoilValue(totalNotificationSelector);
+  
   return (
     <div>
       <button>Home</button>
-      <button>My Network ({forNetwork >= 100 ? "99+" : forNetwork})</button>
-      <button>Jobs ({forJob >= 100 ? "99+" : forJob})</button>
-      <button>Messaging ({forMessage >= 100 ? "99+" : forMessage})</button>
-      <button>Notification ({forNotification >= 100 ? "99+" : forNotification})</button>
-      <button>Me ({forMe})</button>
+      <button>My Network ({notificationCount.network >= 100 ? "99+" : notificationCount.network})</button>
+      <button>Jobs ({notificationCount.jobs >= 100 ? "99+" : notificationCount.jobs})</button>
+      <button>Messaging ({notificationCount.messaging >= 100 ? "99+" : notificationCount.messaging})</button>
+      <button>Notification ({notificationCount.notifications >= 100 ? "99+" : notificationCount.notifications})</button>
+      <button>Me ({totalNotification})</button>
     </div>
   )
 }
